@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Car Palace</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300&family=Manrope:wght@200;300&family=Merriweather:wght@700&family=Mukta:wght@200&family=Roboto:wght@100&display=swap" rel="stylesheet">
+  
+  
+</head>
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg bg-dark text-white" style="height: 50px;">
+  <a class="navbar-brand" href="{% url 'shop:cate' %}">
+      <img src="{% static 'image/logo.png' %}" alt="" style="width: 70px;">
+      Car Palace
+  </a>
+  <button class="navbar-toggler" type="button"  style="z-index: 5;" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-center"  style="z-index: 1;" id="navbarSupportedContent">
+      <form class="d-flex" method="POST" action="{% url 'search:search' %}">
+          {% csrf_token %}
+          <input class="form-control me-1" name="q" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-danger" type="submit">Search</button>
+      </form>
+  </div>
+  <div class="collapse navbar-collapse justify-content-end"  style="z-index: 1;" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+          <li class="nav-item" >
+              <a class="nav-link fw-bold" aria-current="page" href="{% url 'shop:cate' %}">Home</a>
+          </li>
+          <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <b>All categories</b>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  {% for i in links %}
+                  <li><a class="dropdown-item" href="{% url 'shop:product' i.name %}">{{i.name}}</a></li>
+                  {% endfor %}
+              </ul>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'authentication:logout' %}">Logout</a>
+          </li>
+          {% if user.is_superuser == False %}
+          <li class="nav-item">
+              <a class="nav-link fs-5" href="{% url 'cart:cartview' %}"><i class="fa-solid fa-cart-shopping"></i><sup class="">{{count}}</sup></a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link fs-5" href="{% url 'cart:orderview' %}">Your Orders</a>
+          </li>
+          {% endif %}
+          {% else %}
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'authentication:reg' %}">Register</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'authentication:log' %}">Login</a>
+          </li>
+          {% endif %}
+      </ul>
+  </div>
+</nav>
+
+{% block content %}
+
+{% endblock %}
+<footer class="bg-dark text-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mt-4">
+        <h4>Useful Links</h4>
+        <ul class="list-unstyled footer-links">
+          <li><a href="{% url 'shop:cate' %}" class="text-light">Home</a></li>
+          <li><a href="#" class="text-light">Products</a></li>
+          <li><a href="#" class="text-light">Contact</a></li>
+          <!-- Add more links as needed -->
+        </ul>
+      </div>
+      <div class="col-md-4 mt-4">
+        <h4>Social Links</h4>
+        <div class="social-icons">
+          <a href="#" target="_blank" class="text-light"><i class="fab fa-facebook fa-lg"></i></a>
+          <a href="#" target="_blank" class="text-light"><i class="fab fa-twitter fa-lg"></i></a>
+          <a href="#" target="_blank" class="text-light"><i class="fab fa-instagram fa-lg"></i></a>
+          <!-- Add more social icons as needed -->
+        </div>
+      </div>
+      <div class="col-md-4 mt-4">
+        <h4>Contact Us</h4>
+        <p class="text-light">Email: info@example.com</p>
+        <p class="text-light">Phone: +1 (123) 456-7890</p>
+      </div>
+    </div>
+    <hr class="bg-light">
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p class="text-light">&copy; 2024 Your Company. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
